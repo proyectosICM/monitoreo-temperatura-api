@@ -1,17 +1,18 @@
 package com.icm.monitoreotemperaturaapi.controllers;
 
 import com.icm.monitoreotemperaturaapi.components.ErrorResponseBuilder;
-import com.icm.monitoreotemperaturaapi.dto.ErrorResponse;
 import com.icm.monitoreotemperaturaapi.models.CamionesModel;
 import com.icm.monitoreotemperaturaapi.services.CamionesService;
 import com.icm.monitoreotemperaturaapi.validators.CamionesValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +33,12 @@ public class CamionesController {
         return new ResponseEntity<>(camionesService.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/page")
+    public Page<?> getAll( @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "8") int size ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return camionesService.getAll(pageable);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getCarrilById(@PathVariable Long id) {
         Optional<CamionesModel> existing = camionesService.getById(id);

@@ -3,6 +3,8 @@ package com.icm.monitoreotemperaturaapi.services;
 import com.icm.monitoreotemperaturaapi.models.CamionesModel;
 import com.icm.monitoreotemperaturaapi.repositories.CamionesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +18,10 @@ public class CamionesService {
 
     public List<CamionesModel> getAll() {
         return camionesRepository.findAll();
+    }
+
+    public Page<CamionesModel> getAll(Pageable pageable) {
+        return camionesRepository.findAll(pageable);
     }
 
     public Optional<CamionesModel> getById(Long id) {
